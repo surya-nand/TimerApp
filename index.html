@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timer App</title>
+    <link rel="stylesheet" href="style.css"
+  </head>
+  <body>
+    <h1 class="Timer">Timer App</h1>
+    <div class="setup">
+      <div class="hours">
+        <label for="hours">HR</label>
+        <input
+          class="hoursInput"
+          type="number"
+          id="hours"
+          min="0"
+          placeholder="00"
+        />
+      </div>
+      <div class="minutes">
+        <label for="minutes">MIN</label>
+        <input
+          class="minutesInput"
+          type="number"
+          id="minutes"
+          min="0"
+          max="59"
+          placeholder="00"
+        />
+      </div>
+      <div class="seconds">
+        <label for="seconds">SEC</label>
+        <input
+          class="secondsInput"
+          type="number"
+          id="seconds"
+          min="0"
+          max="59"
+          placeholder="00"
+        />
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="start-button">Start</button>
+      <button id="stop-button">Stop</button>
+      <button id="reset-button">Reset</button>
+    </div>
+    <div id="timer"></div>
+    // <audio id="audio" src="mamakuttymasstamilandevringtone-59257-59489.mp3"></audio>
+    <script>
+      let timeinterval = null;
+
+      function StartTimer() {
+        const hours = parseInt(document.getElementById("hours").value);
+        const minutes = parseInt(document.getElementById("minutes").value);
+        const seconds = parseInt(document.getElementById("seconds").value);
+        console.log(hours, minutes, seconds);
+
+        let TotalSeconds = hours * 3600 + minutes * 60 + seconds;
+        console.log(TotalSeconds);
+
+        if (TotalSeconds <= 0) {
+          alert("Please Enter Valid time");
+          return;
+        }
+        timeinterval = setInterval(() => {
+          const hoursleft = Math.floor(TotalSeconds / 3600);
+          const minutesleft = Math.floor((TotalSeconds % 3600) / 60);
+          const secondsleft = TotalSeconds % 60;
+
+          document.getElementById("hours").value = `${hoursleft
+            .toString()
+            .padStart(2, "0")}`;
+          document.getElementById("minutes").value = `${minutesleft
+            .toString()
+            .padStart(2, "0")}`;
+          document.getElementById("seconds").value = `${secondsleft
+            .toString()
+            .padStart(2, "0")}`;
+
+          if (TotalSeconds <= 0) {
+            clearInterval(timeinterval);
+            document.getElementById("timer").textContent = "Time's Up!";
+            document.getElementById("audio").play();
+          } else {
+            TotalSeconds--;
+          }
+        }, 1000);
+      }
+
+      function StopTimer(){
+        clearInterval(timeinterval);
+        document.getElementById("hours").value = `${00}`
+        document.getElementById("minutes").value = `${00}`
+        document.getElementById("seconds").value = `${00}`
+        document.getElementById("audio").stop();
+      }
+
+      document.getElementById('start-button').addEventListener('click', StartTimer);
+      document.getElementById('stop-button').addEventListener('click',StopTimer);
+    </script>
+  </body>
+</html>
